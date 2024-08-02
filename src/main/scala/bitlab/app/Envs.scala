@@ -27,10 +27,18 @@ object Envs extends Codes {
     logger.error("mail_to" + EnvCodes.NotSet)
     ""
   })
+  val telegram_bot: String = Properties.envOrElse("telegram_bot", {
+    logger.error("telegram_bot" + EnvCodes.NotSet)
+    ""
+  })
+  val telegram_chat_id: String = Properties.envOrElse("telegram_chat_id", {
+    logger.error("telegram_chat_id" + EnvCodes.NotSet)
+    ""
+  })
 
 
   def check(): Boolean ={
-    !List(mail_host, mail_port, mail_login, mail_password, mail_to).contains("")
+    !List(mail_host, mail_port, mail_login, mail_password, mail_to, telegram_bot, telegram_chat_id).contains("")
   }
 
 }

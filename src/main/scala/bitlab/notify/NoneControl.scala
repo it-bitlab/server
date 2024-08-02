@@ -1,4 +1,4 @@
-package bitlab.mail
+package bitlab.notify
 
 import bitlab.app.Envs.ErrorCodes
 import bitlab.http.MailManagerMessage

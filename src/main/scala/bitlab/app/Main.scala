@@ -1,7 +1,7 @@
 package bitlab.app
 
 import bitlab.HttpManager
-import bitlab.mail.MailManager
+import bitlab.notify.NotifyManager
 import com.typesafe.config.ConfigFactory
 import org.apache.pekko.NotUsed
 import org.apache.pekko.actor.typed.scaladsl.{Behaviors, Routers}
@@ -29,7 +29,7 @@ object Main {
   def apply(): Behavior[NotUsed] = {
     Behaviors.setup { context =>
       val mail = context.spawn(Routers.pool(poolSize = 1) {
-        Behaviors.supervise(MailManager()).onFailure[Exception](SupervisorStrategy.restart)
+        Behaviors.supervise(NotifyManager()).onFailure[Exception](SupervisorStrategy.restart)
       }, "mail")
       HttpManager(context.system, mail)
       Behaviors.empty

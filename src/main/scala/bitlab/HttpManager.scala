@@ -2,7 +2,7 @@ package bitlab
 
 import bitlab.app.Codes
 import bitlab.http.{HttpActorResponse, MailManagerMessage}
-import bitlab.mail.MailManager.SendMail
+import bitlab.notify.NotifyManager.SendMail
 import com.typesafe.config.ConfigFactory
 import org.apache.pekko.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import org.apache.pekko.actor.typed.{ActorRef, ActorSystem}
