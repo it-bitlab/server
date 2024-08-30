@@ -6,6 +6,7 @@ import bitlab.notify.NotifyManager.SendMail
 import com.typesafe.config.ConfigFactory
 import org.apache.pekko.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import org.apache.pekko.actor.typed.{ActorRef, ActorSystem}
+import org.apache.pekko.http.cors.scaladsl.CorsDirectives.cors
 import org.apache.pekko.http.scaladsl.Http
 import org.apache.pekko.http.scaladsl.model.{HttpEntity, HttpResponse, StatusCodes}
 import org.apache.pekko.http.scaladsl.server.Directives._
@@ -13,6 +14,7 @@ import org.apache.pekko.http.scaladsl.server.Route
 import org.apache.pekko.http.scaladsl.server.directives.FileInfo
 import org.apache.pekko.util.Timeout
 import org.slf4j.LoggerFactory
+
 import java.io.File
 import java.nio.file.{Files, Paths}
 import java.util.{Date, UUID}
@@ -32,7 +34,7 @@ object HttpManager extends Codes with HttpActorResponse {
     try {
       implicit val sys: ActorSystem[Nothing] = system
       implicit val timeout: Timeout = Duration(5, SECONDS)
-      val route: Route = {
+      val route: Route = cors() {
         concat(
           (post & path("mail") & entity(as[String])) { (json) =>
             forward(mail.ask(ref => SendMail(ref, json)))
