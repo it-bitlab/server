@@ -6,6 +6,7 @@ import bitlab.http.{HttpActorResponse, MailManagerMessage}
 import com.typesafe.config.ConfigFactory
 import io.circe.generic.JsonCodec
 import io.circe.jawn.decode
+import io.circe.syntax.EncoderOps
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 import org.apache.pekko.actor.typed.{ActorRef, ActorSystem, Behavior}
 import org.apache.pekko.http.scaladsl.Http
@@ -41,10 +42,10 @@ trait NotifyManagerControl {
           val text = "Пришло сообщение от " + value.name + ", компания " + value.company + ", почта " + value.email + ", вложения: " + value.attachments.mkString(",")
           sendMail(Mail(Envs.mail_to, "Новое сообщение", text))
           sendTelegram(text)
-          replyTo.tell(SuccessTextResponse("send"))
+          replyTo.tell(SuccessTextResponse("send".asJson.toString()))
         case Left(value) =>
           logger.error(value.toString)
-          replyTo.tell(ErrorTextResponse(value.toString))
+          replyTo.tell(ErrorTextResponse(value.toString.asJson.toString()))
       }
       Behaviors.same
   }
